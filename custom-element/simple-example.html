@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple App Explorer Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .app-explorer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .clicked-app {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f3e5f5;
+            border-radius: 8px;
+            border-left: 4px solid #9c27b0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>App Explorer Visualization</h1>
+        <p>Click on any square to see app details</p>
+    </div>
+    
+    <div class="app-explorer-container">
+        <!-- Custom Element with default settings -->
+        <custom-element id="appExplorer"></custom-element>
+        
+        <div class="info">
+            <h3>How it works:</h3>
+            <ul>
+                <li>Each square represents an app from the Wix App Market</li>
+                <li>Square size is proportional to the number of sites where the app is installed</li>
+                <li>Click any square to see detailed information about that app</li>
+                <li>Drag squares around to interact with the physics simulation</li>
+            </ul>
+        </div>
+        
+        <div class="clicked-app" id="clickedApp">
+            <h4>Selected App:</h4>
+            <div id="appDetails"></div>
+        </div>
+    </div>
+
+    <!-- Load the custom element script -->
+    <script src="custom-element-template.js"></script>
+    
+    <script>
+        // Wait for custom element to be defined
+        customElements.whenDefined('custom-element').then(() => {
+            const appExplorer = document.getElementById('appExplorer');
+            
+            // Listen for square click events
+            appExplorer.addEventListener('square-clicked', (event) => {
+                const { data, index } = event.detail;
+                displayAppDetails(data, index);
+            });
+        });
+        
+        function displayAppDetails(data, index) {
+            const clickedApp = document.getElementById('clickedApp');
+            const appDetails = document.getElementById('appDetails');
+            
+            appDetails.innerHTML = `
+                <p><strong>App Name:</strong> ${data.app_name || 'N/A'}</p>
+                <p><strong>Sites Installed:</strong> ${data.sites_installed || 'N/A'}</p>
+                <p><strong>Account:</strong> ${data.account_name || 'N/A'}</p>
+                <p><strong>App Type:</strong> ${data.components_type || 'N/A'}</p>
+                <p><strong>URL:</strong> <a href="${data.url || '#'}" target="_blank">View on App Market</a></p>
+            `;
+            
+            clickedApp.style.display = 'block';
+        }
+    </script>
+</body>
+</html> 

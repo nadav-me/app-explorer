@@ -49,7 +49,7 @@ export default function Home() {
       return obj;
     });
     
-    console.log('Parsed data sample:', data.slice(0, 3));
+    console.log('Parsed data sample:', data.slice(0, 10));
     dataRef.current = data;
     getMinMax();
   }
@@ -130,6 +130,7 @@ export default function Home() {
       Bodies.rectangle(canvasWidth / 2, 0, canvasWidth, 50, { isStatic: true }),
       Bodies.rectangle(canvasWidth / 2, canvasHeight, canvasWidth, 50, { isStatic: true }),
       Bodies.rectangle(canvasWidth, canvasHeight / 2, 50, canvasHeight, { isStatic: true }),
+      Bodies.rectangle(canvasWidth / 3 * 2, canvasHeight / 3 * 2, 25, canvasHeight/3 * 2, { isStatic: true }),
       Bodies.rectangle(0, canvasHeight / 2, 50, canvasHeight, { isStatic: true })
     ]);
 
@@ -163,8 +164,8 @@ export default function Home() {
       // keep the mouse in sync with rendering
       render.mouse = mouse;
 
-      // Add click event listener to detect square clicks
-      render.canvas.addEventListener('click', (event) => {
+      // Add mousedown event listener to detect square clicks
+      render.canvas.addEventListener('mousedown', (event) => {
         const rect = render.canvas.getBoundingClientRect();
         const mouseX = event.clientX - rect.left;
         const mouseY = event.clientY - rect.top;

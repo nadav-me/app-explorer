@@ -217,7 +217,7 @@ class CustomElement extends HTMLElement {
 
     async init() {
         console.log('CustomElement init method called');
-
+        this.setCanvasSize();
         // Create canvas container
         this.canvasContainer = document.createElement('div');
         this.canvasContainer.style.width = `${this.settings.canvasWidth}px`;
@@ -233,6 +233,15 @@ class CustomElement extends HTMLElement {
         // Load data and initialize Matter.js
         await this.loadData();
         await this.loadMatter();
+    }
+
+    setCanvasSize() {
+        //get size of the parent element
+        const parentSize = this.parentElement.getBoundingClientRect();
+        console.log('Parent:', this.parentElement);
+        console.log('Parent size:', parentSize);
+        this.settings.canvasWidth = parentSize.width;
+        this.settings.canvasHeight = parentSize.height;
     }
 
     async loadData() {
@@ -354,11 +363,12 @@ class CustomElement extends HTMLElement {
                     width: this.settings.canvasWidth,
                     height: this.settings.canvasHeight,
                     showAngleIndicator: false,
+                    wireframeBackground: 'white'
                 }
             });
 
             Render.run(this.render);
-
+            // this.render.canvas.style.backgroundColor = '#ffffff';
             // Create runner
             this.runner = Runner.create();
             Runner.run(this.runner, this.engine);
